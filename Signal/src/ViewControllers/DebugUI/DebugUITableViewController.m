@@ -102,14 +102,27 @@ NS_ASSUME_NONNULL_BEGIN
                        [viewController.navigationController pushViewController:fileBrowser animated:YES];
                    }];
     [subsectionItems addObject:sharedDataFileBrowserItem];
-    OWSTableItem *documentsFileBrowserItem = [OWSTableItem
+
+    OWSTableItem *libraryFileBrowserItem = [OWSTableItem
         disclosureItemWithText:@"📁 App Container"
                    actionBlock:^{
                        NSURL *baseURL = [NSURL URLWithString:[OWSFileSystem appLibraryDirectoryPath]];
                        DebugUIFileBrowser *fileBrowser = [[DebugUIFileBrowser alloc] initWithFileURL:baseURL];
                        [viewController.navigationController pushViewController:fileBrowser animated:YES];
                    }];
-    [subsectionItems addObject:documentsFileBrowserItem];
+    [subsectionItems addObject:libraryFileBrowserItem];
+
+    OWSTableItem *tempDirFileBrowserItem = [OWSTableItem
+        disclosureItemWithText:@"📁 Temp Directory"
+                   actionBlock:^{
+                       NSString *tempPath = NSTemporaryDirectory();
+                       NSURL *baseURL = [NSURL fileURLWithPath:tempPath];
+                       OWSAssertDebug(baseURL);
+                       DebugUIFileBrowser *fileBrowser = [[DebugUIFileBrowser alloc] initWithFileURL:baseURL];
+                       [viewController.navigationController pushViewController:fileBrowser animated:YES];
+                   }];
+    [subsectionItems addObject:tempDirFileBrowserItem];
+
     [subsectionItems
         addObject:[self itemForSubsection:[DebugUIBackup new] viewController:viewController thread:thread]];
     [subsectionItems addObject:[self itemForSubsection:[DebugUIMisc new] viewController:viewController thread:thread]];
