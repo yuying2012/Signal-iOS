@@ -240,6 +240,9 @@ void VerifyRegistrationsForPrimaryStorage(OWSStorage *storage)
 
     // Protect the entire new database directory.
     [OWSFileSystem protectFileOrFolderAtPath:self.sharedDataDatabaseDirPath];
+
+    // Ensure we can spool attachments to tmp dir after first unlock
+    [OWSFileSystem protectFileOrFolderAtPath:NSTemporaryDirectory()];
 }
 
 + (NSString *)legacyDatabaseDirPath
