@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)accessibleAfterFirstAuthTempDirectoryPath
 {
     NSString *const dirName = @"accessibleAfterFirstAuthTmp";
-    NSString *const dirPath = [[self appDocumentDirectoryPath] stringByAppendingPathComponent:dirName];
+    NSString *const dirPath = [[self appSharedDataDirectoryPath] stringByAppendingPathComponent:dirName];
     BOOL ok = [self ensureDirectoryExists:dirPath];
     OWSAssert(ok);
     return dirPath;
