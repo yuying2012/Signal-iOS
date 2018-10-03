@@ -312,9 +312,8 @@ static const CGFloat kAttachmentDownloadProgressTheta = 0.001f;
     const long kMaxDownloadSize = 150 * 1024 * 1024;
     __block BOOL hasCheckedContentLength = NO;
 
-    NSString *tempSubdirPath = [OWSFileSystem.accessibleAfterFirstAuthTempDirectoryPath
-        stringByAppendingPathComponent:[NSUUID UUID].UUIDString];
-    NSString *tempFilePath = [tempSubdirPath stringByAppendingPathComponent:[NSUUID UUID].UUIDString];
+    NSString *tempFilePath =
+        [OWSTemporaryDirectoryAccessibleAfterFirstAuth() stringByAppendingPathComponent:[NSUUID UUID].UUIDString];
     NSURL *tempFileURL = [NSURL fileURLWithPath:tempFilePath];
 
     __block NSURLSessionDownloadTask *task;
@@ -327,18 +326,6 @@ static const CGFloat kAttachmentDownloadProgressTheta = 0.001f;
 
         failureHandlerParam(task, error);
     };
-
-    // downloadTaskWithRequest's destination callback needs to
-    // return a path to a non-existent file path, and we can't apply
-    // file protection to a non-existent file path.
-    // By creating the temporary file inside a temporary subdirectory,
-    // we can apply file protection to that subdirectory.
-    if (![OWSFileSystem ensureDirectoryExists:tempSubdirPath]) {
-        OWSLogError(@"Could not create temporary subdirectory for attachment download.");
-        NSError *error = OWSErrorWithCodeDescription(
-            OWSErrorCodeInvalidMessage, NSLocalizedString(@"ERROR_MESSAGE_INVALID_MESSAGE", @""));
-        return failureHandler(error);
-    }
 
     NSString *method = @"GET";
     NSError *serializationError = nil;
