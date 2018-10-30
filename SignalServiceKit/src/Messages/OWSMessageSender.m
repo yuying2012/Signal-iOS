@@ -1687,12 +1687,14 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     }
 
     BOOL isSilent = message.isSilent;
+    BOOL isOnline = message.isOnline;
     OWSMessageServiceParams *messageParams =
         [[OWSMessageServiceParams alloc] initWithType:messageType
                                           recipientId:recipientId
                                                device:[deviceId intValue]
                                               content:serializedMessage
                                              isSilent:isSilent
+                                             isOnline:isOnline
                                        registrationId:[cipher throws_remoteRegistrationId:transaction]];
 
     NSError *error;

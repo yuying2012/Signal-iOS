@@ -54,6 +54,11 @@ public class OWSTypingIndicatorMessage: TSOutgoingMessage {
         return true
     }
 
+    @objc
+    public override var isOnline: Bool {
+        return true
+    }
+
     private func protoAction(forAction action: OWSTypingIndicatorAction) -> SSKProtoTypingMessage.SSKProtoTypingMessageAction {
         switch action {
         case .started:
