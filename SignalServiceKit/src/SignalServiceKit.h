@@ -6,3 +6,4 @@
 #import "OWSFileSystem.h"
 #import "OWSOperation.h"
 #import "OWSSyncManagerProtocol.h"
+#import "TSOutgoingMessage.h"
