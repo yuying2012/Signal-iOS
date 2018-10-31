@@ -17,7 +17,7 @@ public class OWSTypingIndicatorMessage: TSOutgoingMessage {
 
     @objc
     public init(thread: TSThread,
-                action: OWSTypingIndicatorAction) throws {
+                action: OWSTypingIndicatorAction) {
         self.action = action
 
         super.init(outgoingMessageWithTimestamp: NSDate.ows_millisecondTimeStamp(),
