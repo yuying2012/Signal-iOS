@@ -65,7 +65,7 @@ import SignalMessaging
         self.callNotificationsAdapter = CallNotificationsAdapter()
         self.pushRegistrationManager = PushRegistrationManager()
         self.pushManager = PushManager()
-        self.typingIndicators = OWSTypingIndicators()
+        self.typingIndicators = OWSTypingIndicatorsImpl()
 
         super.init()
 
