@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
     OWSOutgoingReceiptManager *outgoingReceiptManager =
         [[OWSOutgoingReceiptManager alloc] initWithPrimaryStorage:primaryStorage];
     id<OWSSyncManagerProtocol> syncManager = [[OWSMockSyncManager alloc] init];
+    id<OWSTypingIndicators> typingIndicators = [[OWSTypingIndicatorsImpl alloc] init];
 
     self = [super initWithContactsManager:contactsManager
                             messageSender:messageSender
@@ -94,7 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
                   contactDiscoveryService:contactDiscoveryService
                        readReceiptManager:readReceiptManager
                    outgoingReceiptManager:outgoingReceiptManager
-                              syncManager:syncManager];
+                              syncManager:syncManager
+                         typingIndicators:typingIndicators];
     if (!self) {
         return nil;
     }

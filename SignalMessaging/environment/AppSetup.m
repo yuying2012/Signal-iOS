@@ -83,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
             [[OWSOutgoingReceiptManager alloc] initWithPrimaryStorage:primaryStorage];
 
         OWSSyncManager *syncManager = [[OWSSyncManager alloc] initDefault];
+        id<OWSTypingIndicators> typingIndicators = [[OWSTypingIndicatorsImpl alloc] init];
 
         OWSAudioSession *audioSession = [OWSAudioSession new];
         OWSSounds *sounds = [[OWSSounds alloc] initWithPrimaryStorage:primaryStorage];
@@ -116,7 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                           contactDiscoveryService:contactDiscoveryService
                                                                readReceiptManager:readReceiptManager
                                                            outgoingReceiptManager:outgoingReceiptManager
-                                                                      syncManager:syncManager]];
+                                                                      syncManager:syncManager
+                                                                 typingIndicators:typingIndicators]];
 
         appSpecificSingletonBlock();
 

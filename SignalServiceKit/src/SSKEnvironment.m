@@ -33,6 +33,7 @@ static SSKEnvironment *sharedSSKEnvironment;
 @property (nonatomic) OWSReadReceiptManager *readReceiptManager;
 @property (nonatomic) OWSOutgoingReceiptManager *outgoingReceiptManager;
 @property (nonatomic) id<OWSSyncManagerProtocol> syncManager;
+@property (nonatomic) id<OWSTypingIndicators> typingIndicators;
 
 @end
 
@@ -67,7 +68,9 @@ static SSKEnvironment *sharedSSKEnvironment;
                 contactDiscoveryService:(ContactDiscoveryService *)contactDiscoveryService
                      readReceiptManager:(OWSReadReceiptManager *)readReceiptManager
                  outgoingReceiptManager:(OWSOutgoingReceiptManager *)outgoingReceiptManager
-                            syncManager:(id<OWSSyncManagerProtocol>)syncManager {
+                            syncManager:(id<OWSSyncManagerProtocol>)syncManager
+                       typingIndicators:(id<OWSTypingIndicators>)typingIndicators
+{
     self = [super init];
     if (!self) {
         return self;
@@ -94,6 +97,7 @@ static SSKEnvironment *sharedSSKEnvironment;
     OWSAssertDebug(readReceiptManager);
     OWSAssertDebug(outgoingReceiptManager);
     OWSAssertDebug(syncManager);
+    OWSAssertDebug(typingIndicators);
 
     _contactsManager = contactsManager;
     _messageSender = messageSender;
@@ -116,6 +120,7 @@ static SSKEnvironment *sharedSSKEnvironment;
     _readReceiptManager = readReceiptManager;
     _outgoingReceiptManager = outgoingReceiptManager;
     _syncManager = syncManager;
+    _typingIndicators = typingIndicators;
 
     return self;
 }

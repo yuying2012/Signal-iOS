@@ -41,7 +41,6 @@
 		340FC8CA20517B84007AEB0F /* OWSBackupImportJob.m in Sources */ = {isa = PBXBuildFile; fileRef = 340FC8C820517B84007AEB0F /* OWSBackupImportJob.m */; };
 		340FC8CD20518C77007AEB0F /* OWSBackupJob.m in Sources */ = {isa = PBXBuildFile; fileRef = 340FC8CC20518C76007AEB0F /* OWSBackupJob.m */; };
 		340FC8D0205BF2FA007AEB0F /* OWSBackupIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 340FC8CE205BF2FA007AEB0F /* OWSBackupIO.m */; };
-		34107E5521891E7400B50AD7 /* OWSTypingIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34107E5421891E7400B50AD7 /* OWSTypingIndicators.swift */; };
 		341F2C0F1F2B8AE700D07D6B /* DebugUIMisc.m in Sources */ = {isa = PBXBuildFile; fileRef = 341F2C0E1F2B8AE700D07D6B /* DebugUIMisc.m */; };
 		3421981C21061D2E00C57195 /* ByteParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3421981B21061D2E00C57195 /* ByteParserTest.swift */; };
 		34277A5E20751BDC006049F2 /* OWSQuotedMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34277A5C20751BDC006049F2 /* OWSQuotedMessageView.m */; };
@@ -349,7 +348,6 @@
 		455A16DE1F1FEA0000F86704 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455A16DC1F1FEA0000F86704 /* MetalKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		455AC69E1F4F8B0300134004 /* ImageCacheTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AC69D1F4F8B0300134004 /* ImageCacheTest.swift */; };
 		45638BDC1F3DD0D400128435 /* DebugUICalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45638BDB1F3DD0D400128435 /* DebugUICalling.swift */; };
-		45638BDF1F3DDB2200128435 /* MessageSender+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45638BDE1F3DDB2200128435 /* MessageSender+Promise.swift */; };
 		45666F581D9B2880008FE134 /* OWSScrubbingLogFormatterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45666F571D9B2880008FE134 /* OWSScrubbingLogFormatterTest.m */; };
 		456F6E2F1E261D1000FD2210 /* PeerConnectionClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456F6E2E1E261D1000FD2210 /* PeerConnectionClientTest.swift */; };
 		4574A5D61DD6704700C6B692 /* CallService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574A5D51DD6704700C6B692 /* CallService.swift */; };
@@ -652,7 +650,6 @@
 		340FC8CC20518C76007AEB0F /* OWSBackupJob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSBackupJob.m; sourceTree = "<group>"; };
 		340FC8CE205BF2FA007AEB0F /* OWSBackupIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSBackupIO.m; sourceTree = "<group>"; };
 		340FC8CF205BF2FA007AEB0F /* OWSBackupIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSBackupIO.h; sourceTree = "<group>"; };
-		34107E5421891E7400B50AD7 /* OWSTypingIndicators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OWSTypingIndicators.swift; sourceTree = "<group>"; };
 		341458471FBE11C4005ABCF9 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = translations/fa.lproj/Localizable.strings; sourceTree = "<group>"; };
 		341F2C0D1F2B8AE700D07D6B /* DebugUIMisc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugUIMisc.h; sourceTree = "<group>"; };
 		341F2C0E1F2B8AE700D07D6B /* DebugUIMisc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugUIMisc.m; sourceTree = "<group>"; };
@@ -1018,7 +1015,6 @@
 		455A16DC1F1FEA0000F86704 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		455AC69D1F4F8B0300134004 /* ImageCacheTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCacheTest.swift; sourceTree = "<group>"; };
 		45638BDB1F3DD0D400128435 /* DebugUICalling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugUICalling.swift; sourceTree = "<group>"; };
-		45638BDE1F3DDB2200128435 /* MessageSender+Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageSender+Promise.swift"; sourceTree = "<group>"; };
 		45666EC41D99483D008FE134 /* OWSAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSAvatarBuilder.h; sourceTree = "<group>"; };
 		45666EC51D99483D008FE134 /* OWSAvatarBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSAvatarBuilder.m; sourceTree = "<group>"; };
 		45666EC71D994C0D008FE134 /* OWSGroupAvatarBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSGroupAvatarBuilder.h; sourceTree = "<group>"; };
@@ -2192,7 +2188,6 @@
 				344825C5211390C800DB4BD8 /* OWSOrphanDataCleaner.m */,
 				34D2CCD82062E7D000CB1A14 /* OWSScreenLockUI.h */,
 				34D2CCD92062E7D000CB1A14 /* OWSScreenLockUI.m */,
-				34107E5421891E7400B50AD7 /* OWSTypingIndicators.swift */,
 				4579431C1E7C8CE9008ED0C0 /* Pastelog.h */,
 				4579431D1E7C8CE9008ED0C0 /* Pastelog.m */,
 				450DF2041E0D74AC003D14BE /* Platform.swift */,
@@ -2463,7 +2458,6 @@
 		FCFA64B11A24F29E0007FB87 /* UI Categories */ = {
 			isa = PBXGroup;
 			children = (
-				45638BDE1F3DDB2200128435 /* MessageSender+Promise.swift */,
 				45C0DC1A1E68FE9000E04C47 /* UIApplication+OWS.swift */,
 				45C0DC1D1E69011F00E04C47 /* UIStoryboard+OWS.swift */,
 				EF764C331DB67CC5000D9A87 /* UIViewController+Permissions.h */,
@@ -3379,7 +3373,6 @@
 				3496744D2076768700080B5F /* OWSMessageBubbleView.m in Sources */,
 				34B3F8751E8DF1700035BE1A /* CallViewController.swift in Sources */,
 				34D8C0281ED3673300188D7C /* DebugUITableViewController.m in Sources */,
-				34107E5521891E7400B50AD7 /* OWSTypingIndicators.swift in Sources */,
 				45F32C222057297A00A300D5 /* MediaDetailViewController.m in Sources */,
 				34B3F8851E8DF1700035BE1A /* NewGroupViewController.m in Sources */,
 				34D8C0271ED3673300188D7C /* DebugUIMessages.m in Sources */,
@@ -3393,7 +3386,6 @@
 				45AE48511E0732D6004D96C2 /* TurnServerInfo.swift in Sources */,
 				34B3F8771E8DF1700035BE1A /* ContactsPicker.swift in Sources */,
 				45C0DC1B1E68FE9000E04C47 /* UIApplication+OWS.swift in Sources */,
-				45638BDF1F3DDB2200128435 /* MessageSender+Promise.swift in Sources */,
 				45FBC5C81DF8575700E9B410 /* CallKitCallManager.swift in Sources */,
 				4539B5861F79348F007141FF /* PushRegistrationManager.swift in Sources */,
 				45FBC5D11DF8592E00E9B410 /* SignalCall.swift in Sources */,

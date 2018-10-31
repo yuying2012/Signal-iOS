@@ -52,9 +52,6 @@ import SignalMessaging
     @objc
     public var pushManager: PushManager
 
-    @objc
-    public var typingIndicators: OWSTypingIndicators
-
     private override init() {
         self.callMessageHandler = WebRTCCallMessageHandler()
         self.callService = CallService()
@@ -65,7 +62,6 @@ import SignalMessaging
         self.callNotificationsAdapter = CallNotificationsAdapter()
         self.pushRegistrationManager = PushRegistrationManager()
         self.pushManager = PushManager()
-        self.typingIndicators = OWSTypingIndicatorsImpl()
 
         super.init()
 

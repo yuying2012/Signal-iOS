@@ -161,6 +161,11 @@ NS_ASSUME_NONNULL_BEGIN
     return SSKEnvironment.shared.profileManager;
 }
 
+- (id<OWSTypingIndicators>)typingIndicators
+{
+    return SSKEnvironment.shared.typingIndicators;
+}
+
 #pragma mark -
 
 - (void)startObserving
@@ -409,6 +414,8 @@ NS_ASSUME_NONNULL_BEGIN
             [self handleIncomingEnvelope:envelope withDataMessage:contentProto.dataMessage transaction:transaction];
         } else if (contentProto.callMessage) {
             [self handleIncomingEnvelope:envelope withCallMessage:contentProto.callMessage];
+        } else if (contentProto.typingMessage) {
+            [self handleIncomingEnvelope:envelope withTypingMessage:contentProto.typingMessage transaction:transaction];
         } else if (contentProto.nullMessage) {
             OWSLogInfo(@"Received null message.");
         } else if (contentProto.receiptMessage) {
@@ -645,6 +652,53 @@ NS_ASSUME_NONNULL_BEGIN
             [self.callMessageHandler receivedBusy:callMessage.busy fromCallerId:envelope.source];
         } else {
             OWSProdInfoWEnvelope([OWSAnalyticsEvents messageManagerErrorCallMessageNoActionablePayload], envelope);
+        }
+    });
+}
+
+- (void)handleIncomingEnvelope:(SSKProtoEnvelope *)envelope
+             withTypingMessage:(SSKProtoTypingMessage *)typingMessage
+                   transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    OWSAssertDebug(transaction);
+
+    if (!envelope) {
+        OWSFailDebug(@"Missing envelope.");
+        return;
+    }
+    if (!typingMessage) {
+        OWSFailDebug(@"Missing typingMessage.");
+        return;
+    }
+
+    TSThread *_Nullable thread;
+    if (typingMessage.hasGroupID) {
+        thread = [TSGroupThread threadWithGroupId:typingMessage.groupID transaction:transaction];
+    } else {
+        thread = [TSContactThread getThreadWithContactId:envelope.source transaction:transaction];
+    }
+    if (!thread) {
+        // This isn't neccesarily an error.  We might not yet know about the thread,
+        // in which case we don't need to display the typing indicators.
+        OWSLogWarn(@"Could not locate thread for typingMessage.");
+        return;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (typingMessage.action) {
+            case SSKProtoTypingMessageActionStarted:
+                [self.typingIndicators didReceiveTypingStartedMessageInThread:thread
+                                                                  recipientId:envelope.source
+                                                                     deviceId:envelope.sourceDevice];
+                break;
+            case SSKProtoTypingMessageActionStopped:
+                [self.typingIndicators didReceiveTypingStoppedMessageInThread:thread
+                                                                  recipientId:envelope.source
+                                                                     deviceId:envelope.sourceDevice];
+                break;
+            default:
+                OWSFailDebug(@"Typing message has unexpected action.");
+                break;
         }
     });
 }
@@ -1390,6 +1444,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                                     inThread:thread
                                                              contactsManager:self.contactsManager
                                                                  transaction:transaction];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.typingIndicators didReceiveIncomingMessageInThread:thread
+                                                     recipientId:envelope.source
+                                                        deviceId:envelope.sourceDevice];
+    });
 }
 
 #pragma mark - helpers

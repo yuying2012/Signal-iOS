@@ -3,27 +3,28 @@
 //
 
 import Foundation
-import PromiseKit
-import SignalServiceKit
 
 @objc public protocol OWSTypingIndicators: class {
+    // TODO: Use this method.
     @objc
     func inputWasTyped(inThread thread: TSThread)
 
+    // TODO: Use this method.
     @objc
     func messageWasSent(inThread thread: TSThread)
 
     @objc
-    func didReceiveTypingMessage(forRecipientId recipientId: String, deviceId: UInt)
+    func didReceiveTypingStartedMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt)
 
     @objc
-    func didReceiveStoppedMessage(forRecipientId recipientId: String, deviceId: UInt)
+    func didReceiveTypingStoppedMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt)
 
     @objc
-    func didReceiveIncomingMessage(forRecipientId recipientId: String, deviceId: UInt)
+    func didReceiveIncomingMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt)
 
+    // TODO: Use this method.
     @objc
-    func areTypingIndicatorsVisible(forRecipientId recipientId: String) -> Bool
+    func areTypingIndicatorsVisible(inThread thread: TSThread, recipientId: String) -> Bool
 }
 
 // MARK: -
@@ -53,34 +54,35 @@ public class OWSTypingIndicatorsImpl: NSObject, OWSTypingIndicators {
     }
 
     @objc
-    public func didReceiveTypingMessage(forRecipientId recipientId: String, deviceId: UInt) {
+    public func didReceiveTypingStartedMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt) {
         AssertIsOnMainThread()
-        let incomingIndicators = ensureIncomingIndicators(forRecipientId: recipientId, deviceId: deviceId)
-        incomingIndicators.didReceiveTypingMessage()
+        let incomingIndicators = ensureIncomingIndicators(forThread: thread, recipientId: recipientId, deviceId: deviceId)
+        incomingIndicators.didReceiveTypingStartedMessage()
     }
 
     @objc
-    public func didReceiveStoppedMessage(forRecipientId recipientId: String, deviceId: UInt) {
+    public func didReceiveTypingStoppedMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt) {
         AssertIsOnMainThread()
-        let incomingIndicators = ensureIncomingIndicators(forRecipientId: recipientId, deviceId: deviceId)
-        incomingIndicators.didReceiveStoppedMessage()
+        let incomingIndicators = ensureIncomingIndicators(forThread: thread, recipientId: recipientId, deviceId: deviceId)
+        incomingIndicators.didReceiveTypingStoppedMessage()
     }
 
     @objc
-    public func didReceiveIncomingMessage(forRecipientId recipientId: String, deviceId: UInt) {
+    public func didReceiveIncomingMessage(inThread thread: TSThread, recipientId: String, deviceId: UInt) {
         AssertIsOnMainThread()
-        let incomingIndicators = ensureIncomingIndicators(forRecipientId: recipientId, deviceId: deviceId)
+        let incomingIndicators = ensureIncomingIndicators(forThread: thread, recipientId: recipientId, deviceId: deviceId)
         incomingIndicators.didReceiveIncomingMessage()
     }
 
     @objc
-    public func areTypingIndicatorsVisible(forRecipientId recipientId: String) -> Bool {
+    public func areTypingIndicatorsVisible(inThread thread: TSThread, recipientId: String) -> Bool {
         AssertIsOnMainThread()
 
-        guard let deviceList = incomingIndicatorsMap[recipientId] else {
+        let key = incomingIndicatorsKey(forThread: thread, recipientId: recipientId)
+        guard let deviceMap = incomingIndicatorsMap[key] else {
             return false
         }
-        for incomingIndicators in deviceList.values {
+        for incomingIndicators in deviceMap.values {
             if incomingIndicators.isTyping {
                 return true
             }
@@ -221,22 +223,27 @@ public class OWSTypingIndicatorsImpl: NSObject, OWSTypingIndicators {
 
     // MARK: -
 
-    // Map of thread id-to-IncomingIndicators.
+    // Map of thread id-to-recipient id-to-device-id-to-IncomingIndicators.
     private var incomingIndicatorsMap = [String: [UInt: IncomingIndicators]]()
 
-    private func ensureIncomingIndicators(forRecipientId recipientId: String, deviceId: UInt) -> IncomingIndicators {
+    private func incomingIndicatorsKey(forThread thread: TSThread, recipientId: String) -> String {
+        return "\(String(describing: thread.uniqueId)) \(recipientId)"
+    }
+
+    private func ensureIncomingIndicators(forThread thread: TSThread, recipientId: String, deviceId: UInt) -> IncomingIndicators {
         AssertIsOnMainThread()
 
-        guard let deviceList = incomingIndicatorsMap[recipientId] else {
+        let key = incomingIndicatorsKey(forThread: thread, recipientId: recipientId)
+        guard let deviceMap = incomingIndicatorsMap[key] else {
             let incomingIndicators = IncomingIndicators(recipientId: recipientId, deviceId: deviceId)
-            incomingIndicatorsMap[recipientId] = [deviceId: incomingIndicators]
+            incomingIndicatorsMap[key] = [deviceId: incomingIndicators]
             return incomingIndicators
         }
-        guard let incomingIndicators = deviceList[deviceId] else {
+        guard let incomingIndicators = deviceMap[deviceId] else {
             let incomingIndicators = IncomingIndicators(recipientId: recipientId, deviceId: deviceId)
-            var deviceListCopy = deviceList
-            deviceListCopy[deviceId] = incomingIndicators
-            incomingIndicatorsMap[recipientId] = deviceListCopy
+            var deviceMapCopy = deviceMap
+            deviceMapCopy[deviceId] = incomingIndicators
+            incomingIndicatorsMap[key] = deviceMapCopy
             return incomingIndicators
         }
         return incomingIndicators
@@ -265,7 +272,7 @@ public class OWSTypingIndicatorsImpl: NSObject, OWSTypingIndicators {
             self.deviceId = deviceId
         }
 
-        func didReceiveTypingMessage() {
+        func didReceiveTypingStartedMessage() {
             AssertIsOnMainThread()
 
             // If the client receives a ACTION=TYPING message:
@@ -282,7 +289,7 @@ public class OWSTypingIndicatorsImpl: NSObject, OWSTypingIndicators {
             isTyping = true
         }
 
-        func didReceiveStoppedMessage() {
+        func didReceiveTypingStoppedMessage() {
             AssertIsOnMainThread()
 
             // If the client receives a ACTION=STOPPED message:
