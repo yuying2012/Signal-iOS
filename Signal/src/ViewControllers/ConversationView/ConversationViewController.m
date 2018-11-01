@@ -2215,12 +2215,12 @@ typedef enum : NSUInteger {
     }
     TSMessage *mediaMessage = (TSMessage *)viewItem.interaction;
 
-    MediaGalleryViewController *vc = [[MediaGalleryViewController alloc]
-              initWithThread:self.thread
-        uiDatabaseConnection:self.uiDatabaseConnection
-                     options:MediaGalleryOptionSliderEnabled | MediaGalleryOptionShowAllMediaButton];
+    MediaGallery *mediaGallery =
+        [[MediaGallery alloc] initWithThread:self.thread
+                        uiDatabaseConnection:self.uiDatabaseConnection
+                                     options:MediaGalleryOptionSliderEnabled | MediaGalleryOptionShowAllMediaButton];
 
-    [vc presentDetailViewFromViewController:self mediaMessage:mediaMessage replacingView:imageView];
+    [mediaGallery presentDetailViewFromViewController:self mediaMessage:mediaMessage replacingView:imageView];
 }
 
 - (void)didTapVideoViewItem:(id<ConversationViewItem>)viewItem
@@ -2244,12 +2244,12 @@ typedef enum : NSUInteger {
     }
     TSMessage *mediaMessage = (TSMessage *)viewItem.interaction;
 
-    MediaGalleryViewController *vc = [[MediaGalleryViewController alloc]
-              initWithThread:self.thread
-        uiDatabaseConnection:self.uiDatabaseConnection
-                     options:MediaGalleryOptionSliderEnabled | MediaGalleryOptionShowAllMediaButton];
+    MediaGallery *mediaGallery =
+        [[MediaGallery alloc] initWithThread:self.thread
+                        uiDatabaseConnection:self.uiDatabaseConnection
+                                     options:MediaGalleryOptionSliderEnabled | MediaGalleryOptionShowAllMediaButton];
 
-    [vc presentDetailViewFromViewController:self mediaMessage:mediaMessage replacingView:imageView];
+    [mediaGallery presentDetailViewFromViewController:self mediaMessage:mediaMessage replacingView:imageView];
 }
 
 - (void)didTapAudioViewItem:(id<ConversationViewItem>)viewItem attachmentStream:(TSAttachmentStream *)attachmentStream
