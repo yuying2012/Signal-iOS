@@ -94,7 +94,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
 
     OWSSingletonAssert();
 
-    [AppReadiness runNowOrWhenAppIsReady:^{
+    [AppReadiness runNowOrWhenAppDidBecomeReady:^{
         [self rotateLocalProfileKeyIfNecessary];
     }];
 
@@ -1488,7 +1488,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
 - (void)blockListDidChange:(NSNotification *)notification {
     OWSAssertIsOnMainThread();
 
-    [AppReadiness runNowOrWhenAppIsReady:^{
+    [AppReadiness runNowOrWhenAppDidBecomeReady:^{
         [self rotateLocalProfileKeyIfNecessary];
     }];
 }

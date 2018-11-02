@@ -200,7 +200,7 @@ NSString *const kSyncManagerLastContactSyncKey = @"kTSStorageManagerOWSSyncManag
 }
 
 - (void)sendConfigurationSyncMessage {
-    [AppReadiness runNowOrWhenAppIsReady:^{
+    [AppReadiness runNowOrWhenAppDidBecomeReady:^{
         [self sendConfigurationSyncMessage_AppReady];
     }];
 }
