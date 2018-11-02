@@ -109,7 +109,9 @@ public extension JobQueue {
         jobRecord.save(with: transaction)
 
         transaction.addCompletionQueue(.global()) {
-            self.workStep()
+            AppReadiness.runNowOrWhenAppIsReady {
+                self.workStep()
+            }
         }
     }
 
@@ -283,7 +285,7 @@ public class JobRecordFinder: NSObject, Finder {
 
     func allRecords(label: String, status: SSKJobRecordStatus, transaction: YapDatabaseReadTransaction) -> [SSKJobRecord] {
         var result: [SSKJobRecord] = []
-        self.enumerateJobRecords(label: label, status: status, transaction: transaction) { jobRecord, stopPointer in
+        self.enumerateJobRecords(label: label, status: status, transaction: transaction) { jobRecord, _ in
             result.append(jobRecord)
         }
         return result
@@ -293,7 +295,7 @@ public class JobRecordFinder: NSObject, Finder {
         let queryFormat = String(format: "WHERE %@ = ? AND %@ = ? ORDER BY %@", JobRecordField.status.rawValue, JobRecordField.label.rawValue, JobRecordField.sortId.rawValue)
         let query = YapDatabaseQuery(string: queryFormat, parameters: [status.rawValue, label])
 
-        self.ext(transaction: transaction).enumerateKeysAndObjects(matching: query) { collection, key, object, stopPointer in
+        self.ext(transaction: transaction).enumerateKeysAndObjects(matching: query) { _, _, object, stopPointer in
             guard let jobRecord = object as? SSKJobRecord else {
                 owsFailDebug("expecting jobRecord but found: \(object)")
                 return
