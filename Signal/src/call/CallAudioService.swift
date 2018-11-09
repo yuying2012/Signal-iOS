@@ -397,18 +397,18 @@ protocol CallAudioServiceDelegate: class {
     }
 
     private func play(sound: OWSSound) {
-        guard let newPlayer = OWSSounds.audioPlayer(for: sound, audioBehavior: .call) else {
-            owsFailDebug("unable to build player for sound: \(OWSSounds.displayName(for: sound))")
-            return
-        }
-        Logger.info("playing sound: \(OWSSounds.displayName(for: sound))")
-
-        // It's important to stop the current player **before** starting the new player. In the case that 
-        // we're playing the same sound, since the player is memoized on the sound instance, we'd otherwise 
-        // stop the sound we just started.
-        self.currentPlayer?.stop()
-        newPlayer.play()
-        self.currentPlayer = newPlayer
+//        guard let newPlayer = OWSSounds.audioPlayer(for: sound, audioBehavior: .call) else {
+//            owsFailDebug("unable to build player for sound: \(OWSSounds.displayName(for: sound))")
+//            return
+//        }
+//        Logger.info("playing sound: \(OWSSounds.displayName(for: sound))")
+//
+//        // It's important to stop the current player **before** starting the new player. In the case that 
+//        // we're playing the same sound, since the player is memoized on the sound instance, we'd otherwise 
+//        // stop the sound we just started.
+//        self.currentPlayer?.stop()
+//        newPlayer.play()
+//        self.currentPlayer = newPlayer
     }
 
     // MARK: - Ringing
