@@ -56,7 +56,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AB62203226FE5032747AA668B1E97176"
+               BlueprintIdentifier = "A4C3E5D3E29BBA9D0754E87720349982"
                BuildableName = "SignalServiceKit-Unit-Tests.xctest"
                BlueprintName = "SignalServiceKit-Unit-Tests"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -136,8 +136,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      enableThreadSanitizer = "YES"
-      enableUBSanitizer = "YES"
+      disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"

@@ -60,6 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)canMakeRequestsOfType:(OWSWebSocketType)webSocketType
 {
+    return NO;
+    
     return [self webSocketOfType:webSocketType].canMakeRequests;
 }
 

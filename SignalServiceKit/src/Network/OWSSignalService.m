@@ -141,6 +141,9 @@ NSString *const kNSNotificationName_IsCensorshipCircumventionActiveDidChange =
 
 - (BOOL)isCensorshipCircumventionActive
 {
+    return NO;
+//    return YES;
+
     @synchronized(self)
     {
         return _isCensorshipCircumventionActive;
@@ -149,12 +152,12 @@ NSString *const kNSNotificationName_IsCensorshipCircumventionActiveDidChange =
 
 - (AFHTTPSessionManager *)signalServiceSessionManager
 {
-    if (self.isCensorshipCircumventionActive) {
-        OWSLogInfo(@"using reflector HTTPSessionManager via: %@", self.censorshipConfiguration.domainFrontBaseURL);
-        return self.reflectorSignalServiceSessionManager;
-    } else {
-        return self.defaultSignalServiceSessionManager;
-    }
+    //    if (self.isCensorshipCircumventionActive) {
+    //        OWSLogInfo(@"using reflector HTTPSessionManager via: %@",
+    //        self.censorshipConfiguration.domainFrontBaseURL); return self.reflectorSignalServiceSessionManager;
+    //    } else {
+    return self.defaultSignalServiceSessionManager;
+    //    }
 }
 
 - (AFHTTPSessionManager *)defaultSignalServiceSessionManager
@@ -165,7 +168,8 @@ NSString *const kNSNotificationName_IsCensorshipCircumventionActiveDidChange =
     AFHTTPSessionManager *sessionManager =
         [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL sessionConfiguration:sessionConf];
 
-    sessionManager.securityPolicy = [OWSHTTPSecurityPolicy sharedPolicy];
+    //    sessionManager.securityPolicy = [OWSHTTPSecurityPolicy sharedPolicy];
+    sessionManager.securityPolicy = [MockSecurityPolicy sharedPolicy];
     sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
 
@@ -181,7 +185,8 @@ NSString *const kNSNotificationName_IsCensorshipCircumventionActiveDidChange =
         [[AFHTTPSessionManager alloc] initWithBaseURL:censorshipConfiguration.domainFrontBaseURL
                                  sessionConfiguration:sessionConf];
 
-    sessionManager.securityPolicy = censorshipConfiguration.domainFrontSecurityPolicy;
+    //    sessionManager.securityPolicy = censorshipConfiguration.domainFrontSecurityPolicy;
+    sessionManager.securityPolicy = [MockSecurityPolicy sharedPolicy];
 
     sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     [sessionManager.requestSerializer setValue:self.censorshipConfiguration.signalServiceReflectorHost forHTTPHeaderField:@"Host"];

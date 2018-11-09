@@ -90,3 +90,61 @@ _out:
 }
 
 @end
+
+#pragma mark -
+
+@implementation MockSecurityPolicy
+
++ (instancetype)sharedPolicy
+{
+    static MockSecurityPolicy *httpSecurityPolicy = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        httpSecurityPolicy = [[self alloc] initWithOWSPolicy];
+    });
+    return httpSecurityPolicy;
+}
+
+- (instancetype)initWithOWSPolicy
+{
+    self = [[super class] defaultPolicy];
+
+    if (self) {
+        //        self.pinnedCertificates = [NSSet setWithArray:@[
+        //                                                        [self certificateDataForService:@"textsecure"],
+        //                                                        ]];
+    }
+
+    return self;
+}
+
+- (NSArray *)certs
+{
+    return @[];
+    //    return @[ (__bridge id)[self certificateForService:@"textsecure"] ];
+}
+
+//- (NSData *)certificateDataForService:(NSString *)service {
+//    SecCertificateRef certRef = [self certificateForService:service];
+//    return (__bridge_transfer NSData *)SecCertificateCopyData(certRef);
+//}
+//
+//- (SecCertificateRef)certificateForService:(NSString *)service {
+//
+//    NSBundle *bundle = [NSBundle bundleForClass:self.class];
+//    NSString *path = [bundle pathForResource:service ofType:@"cer"];
+//
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+//        OWSFail(@"Missing signing certificate for service %@", service);
+//    }
+//
+//    NSData *certificateData = [NSData dataWithContentsOfFile:path];
+//    return SecCertificateCreateWithData(NULL, (__bridge CFDataRef)(certificateData));
+//}
+
+- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain
+{
+    return YES;
+}
+
+@end
