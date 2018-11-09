@@ -23,7 +23,8 @@
 
 - (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain {
   // Delegate server trust to our existing HTTP policy.
-  return [[OWSHTTPSecurityPolicy sharedPolicy] evaluateServerTrust:serverTrust forDomain:domain];
+  return [[MockSecurityPolicy sharedPolicy] evaluateServerTrust:serverTrust forDomain:domain];
+  //    return [[OWSHTTPSecurityPolicy sharedPolicy] evaluateServerTrust:serverTrust forDomain:domain];
 }
 
 @end

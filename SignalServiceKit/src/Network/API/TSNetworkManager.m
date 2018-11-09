@@ -90,6 +90,10 @@ typedef void (^failureBlock)(NSURLSessionDataTask *task, NSError *error);
     TSNetworkManagerSuccess success = ^(NSURLSessionDataTask *task, _Nullable id responseObject) {
         OWSLogInfo(@"request succeeded : %@", request);
 
+#ifdef DEBUG
+        [TSNetworkManager logCurlForTask:task];
+#endif
+
         if (request.shouldHaveAuthorizationHeaders) {
             [TSAccountManager.sharedInstance setIsDeregistered:NO];
         }
