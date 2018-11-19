@@ -225,9 +225,9 @@ typedef NSNumber *OWSTaskId;
             //
             // See:
             // https://developer.apple.com/documentation/uikit/uiapplication/1623031-beginbackgroundtaskwithexpiratio)
-            OWSAssertDebug([NSThread isMainThread]);
-
-            [self backgroundTaskExpired];
+            DispatchMainThreadSafe(^{
+                [self backgroundTaskExpired];
+            });
         }];
 
         // If the background task could not begin, return NO to indicate that.
@@ -322,12 +322,16 @@ typedef NSNumber *OWSTaskId;
 
 + (OWSBackgroundTask *)backgroundTaskWithLabel:(NSString *)label
 {
+    OWSAssertIsOnMainThread();
+
     return [[OWSBackgroundTask alloc] initWithLabel:label completionBlock:nil];
 }
 
 + (OWSBackgroundTask *)backgroundTaskWithLabel:(NSString *)label
                                completionBlock:(BackgroundTaskCompletionBlock)completionBlock
 {
+    OWSAssertIsOnMainThread();
+
     return [[OWSBackgroundTask alloc] initWithLabel:label completionBlock:completionBlock];
 }
 

@@ -372,50 +372,53 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                                   transaction:transaction];
         }];
 
-        NSOperationQueue *sendingQueue = [self sendingQueueForMessage:message];
-        OWSSendMessageOperation *sendMessageOperation =
-            [[OWSSendMessageOperation alloc] initWithMessage:message
-                                               messageSender:self
-                                                dbConnection:self.dbConnection
-                                                     success:successHandler
-                                                     failure:failureHandler];
+        // OWSOperation should always be created on the main thread.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            OWSSendMessageOperation *sendMessageOperation =
+                [[OWSSendMessageOperation alloc] initWithMessage:message
+                                                   messageSender:self
+                                                    dbConnection:self.dbConnection
+                                                         success:successHandler
+                                                         failure:failureHandler];
 
-        // TODO: de-dupe attachment enqueue logic.
-        for (NSString *attachmentId in message.attachmentIds) {
-            OWSUploadOperation *uploadAttachmentOperation =
-                [[OWSUploadOperation alloc] initWithAttachmentId:attachmentId dbConnection:self.dbConnection];
-            [sendMessageOperation addDependency:uploadAttachmentOperation];
-            [sendingQueue addOperation:uploadAttachmentOperation];
-        }
+            NSOperationQueue *sendingQueue = [self sendingQueueForMessage:message];
+            // TODO: de-dupe attachment enqueue logic.
+            for (NSString *attachmentId in message.attachmentIds) {
+                OWSUploadOperation *uploadAttachmentOperation =
+                    [[OWSUploadOperation alloc] initWithAttachmentId:attachmentId dbConnection:self.dbConnection];
+                [sendMessageOperation addDependency:uploadAttachmentOperation];
+                [sendingQueue addOperation:uploadAttachmentOperation];
+            }
 
-        // Though we currently only ever expect at most one thumbnail, the proto data model
-        // suggests this could change. The logic is intended to work with multiple, but
-        // if we ever actually want to send multiple, we should do more testing.
-        OWSAssertDebug(quotedThumbnailAttachments.count <= 1);
-        for (TSAttachmentStream *thumbnailAttachment in quotedThumbnailAttachments) {
-            OWSAssertDebug(message.quotedMessage);
+            // Though we currently only ever expect at most one thumbnail, the proto data model
+            // suggests this could change. The logic is intended to work with multiple, but
+            // if we ever actually want to send multiple, we should do more testing.
+            OWSAssertDebug(quotedThumbnailAttachments.count <= 1);
+            for (TSAttachmentStream *thumbnailAttachment in quotedThumbnailAttachments) {
+                OWSAssertDebug(message.quotedMessage);
 
-            OWSUploadOperation *uploadQuoteThumbnailOperation =
-                [[OWSUploadOperation alloc] initWithAttachmentId:thumbnailAttachment.uniqueId
-                                                    dbConnection:self.dbConnection];
+                OWSUploadOperation *uploadQuoteThumbnailOperation =
+                    [[OWSUploadOperation alloc] initWithAttachmentId:thumbnailAttachment.uniqueId
+                                                        dbConnection:self.dbConnection];
 
-            // TODO put attachment uploads on a (lowly) concurrent queue
-            [sendMessageOperation addDependency:uploadQuoteThumbnailOperation];
-            [sendingQueue addOperation:uploadQuoteThumbnailOperation];
-        }
+                // TODO put attachment uploads on a (lowly) concurrent queue
+                [sendMessageOperation addDependency:uploadQuoteThumbnailOperation];
+                [sendingQueue addOperation:uploadQuoteThumbnailOperation];
+            }
 
-        if (contactShareAvatarAttachment != nil) {
-            OWSAssertDebug(message.contactShare);
-            OWSUploadOperation *uploadAvatarOperation =
-                [[OWSUploadOperation alloc] initWithAttachmentId:contactShareAvatarAttachment.uniqueId
-                                                    dbConnection:self.dbConnection];
+            if (contactShareAvatarAttachment != nil) {
+                OWSAssertDebug(message.contactShare);
+                OWSUploadOperation *uploadAvatarOperation =
+                    [[OWSUploadOperation alloc] initWithAttachmentId:contactShareAvatarAttachment.uniqueId
+                                                        dbConnection:self.dbConnection];
 
-            // TODO put attachment uploads on a (lowly) concurrent queue
-            [sendMessageOperation addDependency:uploadAvatarOperation];
-            [sendingQueue addOperation:uploadAvatarOperation];
-        }
+                // TODO put attachment uploads on a (lowly) concurrent queue
+                [sendMessageOperation addDependency:uploadAvatarOperation];
+                [sendingQueue addOperation:uploadAvatarOperation];
+            }
 
-        [sendingQueue addOperation:sendMessageOperation];
+            [sendingQueue addOperation:sendMessageOperation];
+        });
     });
 }
 
