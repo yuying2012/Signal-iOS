@@ -2768,15 +2768,15 @@
 						ProvisioningStyle = Automatic;
 					};
 					D221A088169C9E5E00537ABF = {
-						DevelopmentTeam = U68MSDN6DR;
+						DevelopmentTeam = UC9GKS8R4B;
 						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.DataProtection = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 0;
@@ -2785,7 +2785,7 @@
 								enabled = 0;
 							};
 							com.apple.Keychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Push = {
 								enabled = 1;
@@ -4106,7 +4106,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U68MSDN6DR;
+				DEVELOPMENT_TEAM = UC9GKS8R4B;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -4172,7 +4172,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U68MSDN6DR;
+				DEVELOPMENT_TEAM = UC9GKS8R4B;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
